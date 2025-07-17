@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+    <meta charset="UTF-8">
+    <title>İngilis Dili Quiz</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        #question {
+            font-size: 1.5rem;
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        #options button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        #options button:hover {
+            background-color: #45a049;
+        }
+        
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Söz Quiz</h1>
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="result"></div>
+
+    <script>
+        const words = [{
+            en: "benevolent",
+            az: "xeyirxah"
+        }, {
+            en: "diminish",
+            az: "azaltmaq"
+        }, {
+            en: "contempt",
+            az: "nifrət"
+        }, {
+            en: "obsolete",
+            az: "köhnəlmiş"
+        }, {
+            en: "courage",
+            az: "cüsarət"
+        }, {
+            en: "generous",
+            az: "səxavətli"
+        }];
+
+        function getRandomOptions(correct) {
+            let options = [correct.az];
+            while (options.length < 4) {
+                let rand = words[Math.floor(Math.random() * words.length)].az;
+                if (!options.includes(rand)) options.push(rand);
+            }
+            return options.sort(() => Math.random() - 0.5);
+        }
+
+        function askQuestion() {
+            const question = words[Math.floor(Math.random() * words.length)];
+            document.getElementById('question').innerText = `Tərcümə et: ${question.en}`;
+            const options = getRandomOptions(question);
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    document.getElementById('result').innerText =
+                        opt === question.az ? '✅ Düzgün!' : `❌ Səhv! Doğru: ${question.az}`;
+                    setTimeout(() => {
+                        document.getElementById('result').innerText = '';
+                        askQuestion();
+                    }, 2000);
+                };
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        askQuestion();
+    </script>
+</body>
+
+</html>
